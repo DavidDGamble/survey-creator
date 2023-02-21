@@ -4,10 +4,26 @@ import PropTypes from 'prop-types';
 function SurveyForm(props) {
   const { survey } = props;
 
-  // Write function to handleSubmit
+  function handleSurveyFormSubmit(event) {
+    event.preventDefault();
+    props.onNewAnswersCreation({
+      // name: survey.name,
+      surveyId: survey.id,
+      // q1: survey.q1,
+      a1: event.target.a1.value,
+      // q2: survey.q2,
+      a2: event.target.a2.value,
+      // q3: survey.q3,
+      a3: event.target.a3.value,
+      // q4: survey.q4,
+      a4: event.target.a4.value,
+      // q5: survey.q5,
+      a5: event.target.a5.value,
+    });
+  };
 
   return (
-    <div className="survey-form">
+    <div className="survey-form" onSubmit={handleSurveyFormSubmit}>
       <h2>{survey.name}</h2>
       <form>
         <label>{survey.q1}</label><br/>

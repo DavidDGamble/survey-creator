@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background-color: lavender;
 }
 
 code {
@@ -34,6 +35,16 @@ code {
   border-radius: .25rem;
 }
 
-.main-btn:hover {
+button:hover {
   background-color: white;
+}
+
+button {
+  background-color: olivedrab;
+  font-weight: bold;
+  border-radius: .25rem;
+}
+
+li {
+  list-style: none;
 }

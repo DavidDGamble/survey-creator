@@ -1,8 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { auth } from './../firebase';
 
 function SurveyDetail(props) {
   const { survey, onClickingEdit, onClickingDelete, onClickingSurvey } = props;
+  let edit = null;
+  let remove = null;
+
+  if (auth.currentUser.uid === survey.userId) {
+    edit = <button onClick={onClickingEdit}>Edit</button>
+    remove = <button onClick={()=> onClickingDelete(survey.id)}>Delete</button>
+  }
+
   return (
     <div>
       <h2>Survey Details</h2>
@@ -13,8 +22,10 @@ function SurveyDetail(props) {
       <p><strong>Question 4: </strong>{survey.q4}</p>
       <p><strong>Question 5: </strong>{survey.q5}</p>
       <button onClick={onClickingSurvey}>Take Survey!</button>
-      <button onClick={onClickingEdit}>Edit</button>
-      <button onClick={()=> onClickingDelete(survey.id)}>Delete</button>
+      {edit}
+      {remove}
+      {/* <button onClick={onClickingEdit}>Edit</button>
+      <button onClick={()=> onClickingDelete(survey.id)}>Delete</button> */}
     </div>
   )
 }

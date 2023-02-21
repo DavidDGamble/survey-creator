@@ -4,7 +4,7 @@ import NewSurveyForm from './NewSurveyForm';
 import SurveyDetail from './SurveyDetail'
 import EditSurveyForm from './EditSurveyForm';
 import SurveyForm from './SurveyForm';
-import db from './../firebase.js';
+import { db, auth } from './../firebase.js';
 import { collection, doc, addDoc, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
 
 function SurveyControl() {
@@ -14,6 +14,7 @@ function SurveyControl() {
   const [editing, setEditing] = useState(false);
   const [takeSurvey, setTakeSurvey] = useState(false);
   const [error, setError] = useState(null);
+  const [yourSurveys, setYourSurveys] = useState(false)
 
   useEffect(() => {
     const unSubscribe = onSnapshot(
@@ -40,6 +41,7 @@ function SurveyControl() {
       setCreateFormVisible(false);
       setSelectedSurvey(null);
       setEditing(false);
+      setTakeSurvey(false);
     } else {
       setCreateFormVisible(!createFormVisible)
     }
@@ -74,53 +76,76 @@ function SurveyControl() {
   const handleDeletingSurvey = async (id) => {
     await deleteDoc(doc(db, 'surveys', id));
     setSelectedSurvey(null);
-  }; 
+  };
 
   const handleTakeSurveyClick = () => {
     setTakeSurvey(true);
   };
 
-  
+  const handleYourSurveysClick = () => {
+    setYourSurveys(!yourSurveys);
+  }
 
-  let currVisibleState = null;
-  let buttonText = null;
+  if (auth.currentUser == null) {
+    return (
+      <React.Fragment>
+        <h1>You must be signed in to access surveys.</h1>
+      </React.Fragment>
+    )
+  } else if (auth.currentUser != null) {
 
-  if (error) {
-    currVisibleState = <p>There was an error: {error}</p>
-  } else if (editing) {
-    currVisibleState = <EditSurveyForm 
-      survey={selectedSurvey}
-      onEditSurvey={handleEditSurvey} />
-    buttonText = 'Return to survey list';
-  } else if (takeSurvey) {
-    currVisibleState = <SurveyForm 
-      survey={selectedSurvey} 
-      onNewAnswersCreation={handleAddingAnswersToList}/>
-    buttonText = 'Return to survey list';
-  } else if (createFormVisible) {
-    currVisibleState = <NewSurveyForm
-      onNewSurveyCreation={handleAddingNewSurveyToList} />
-    buttonText = 'Return to survey list';
-  } else if (selectedSurvey != null) {
-    currVisibleState = <SurveyDetail 
-      survey={selectedSurvey}
-      onClickingDelete={handleDeletingSurvey}
-      onClickingEdit={handleEditClick}
-      onClickingSurvey={handleTakeSurveyClick} />
-    buttonText="Return to survey list";
-  } else {
-    currVisibleState = <SurveyList 
-      onSurveySelection={handleChangingSelectedSurvey} 
-      surveyList={mainSurveyList} />
-    buttonText = 'Add survey';
+    let currVisibleState = null;
+    let buttonText = null;
+    let currSurveyList = null;
+    let yourBtnText = null;
+
+    if (yourSurveys) {
+      currSurveyList = mainSurveyList.filter(survey => survey.userId === auth.currentUser.uid);
+      yourBtnText = 'View all surveys'
+    } else {
+      currSurveyList = mainSurveyList;
+      yourBtnText = 'View your surveys'
+    }
+
+    if (error) {
+      currVisibleState = <p>There was an error: {error}</p>
+    } else if (editing) {
+      currVisibleState = <EditSurveyForm
+        survey={selectedSurvey}
+        onEditSurvey={handleEditSurvey} />
+      buttonText = 'Return to survey list';
+    } else if (takeSurvey) {
+      currVisibleState = <SurveyForm
+        survey={selectedSurvey}
+        onNewAnswersCreation={handleAddingAnswersToList} />
+      buttonText = 'Return to survey list';
+    } else if (createFormVisible) {
+      currVisibleState = <NewSurveyForm
+        onNewSurveyCreation={handleAddingNewSurveyToList} />
+      buttonText = 'Return to survey list';
+    } else if (selectedSurvey != null) {
+      currVisibleState = <SurveyDetail
+        survey={selectedSurvey}
+        onClickingDelete={handleDeletingSurvey}
+        onClickingEdit={handleEditClick}
+        onClickingSurvey={handleTakeSurveyClick} />
+      buttonText = "Return to survey list";
+    } else {
+      currVisibleState = <SurveyList
+        onSurveySelection={handleChangingSelectedSurvey}
+        surveyList={currSurveyList} />
+      buttonText = 'Add survey';
+    };
+
+    return (
+      <React.Fragment>
+        {currVisibleState}
+        {error ? null : <button className="main-btn" onClick={handleClick}>{buttonText}</button>}
+        <button className="main-btn" onClick={handleYourSurveysClick}>{yourBtnText}</button>
+      </React.Fragment>
+    );
   };
-
-  return (
-    <React.Fragment>
-      {currVisibleState}
-      {error ? null : <button className="main-btn" onClick={handleClick}>{buttonText}</button>}
-    </React.Fragment>
-  );
-};
+}
 
 export default SurveyControl;
+

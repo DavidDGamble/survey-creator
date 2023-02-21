@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { auth } from './../firebase.js';
 
 function NewSurveyForm(props) {
   function handleNewSurveyFormSubmit(event) {
@@ -11,6 +12,7 @@ function NewSurveyForm(props) {
       q3: event.target.q3.value,
       q4: event.target.q4.value,
       q5: event.target.q5.value,
+      userId: auth.currentUser.uid
     });
   };
 
