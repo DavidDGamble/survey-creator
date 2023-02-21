@@ -1,17 +1,42 @@
 import React, { useState, useEffect } from "react";
 import SurveyList from './SurveyList';
 import NewSurveyForm from './NewSurveyForm';
+import SurveyDetail from './SurveyDetail'
+import EditSurveyForm from './EditSurveyForm';
+import db from './../firebase.js';
+import { collection, doc, addDoc, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
 
 function SurveyControl() {
   const [createFormVisible, setCreateFormVisible] = useState(false);
   const [mainSurveyList, setMainSurveyList] = useState([]);
   const [selectedSurvey, setSelectedSurvey] = useState(null);
   const [editing, setEditing] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const unSubscribe = onSnapshot(
+      collection(db, 'surveys'),
+      (collectionSnapshot) => {
+        const surveys = [];
+        collectionSnapshot.forEach((doc) => {
+          surveys.push({
+            ...doc.data(),
+            id: doc.id
+          });
+        });
+        setMainSurveyList(surveys);
+      },
+      (error) => {
+        setError(error.message);
+      }
+    );
+    return () => unSubscribe();
+  }, []);
 
   const handleClick = () => {
     if (selectedSurvey != null) {
       setCreateFormVisible(false);
-      selectedSurvey(null);
+      setSelectedSurvey(null);
       setEditing(false);
     } else {
       setCreateFormVisible(!createFormVisible)
@@ -23,20 +48,58 @@ function SurveyControl() {
     setSelectedSurvey(selection);
   }
 
+  const handleAddingNewSurveyToList = async (newSurvey) => {
+    await addDoc(collection(db, 'surveys'), newSurvey);
+    setCreateFormVisible(false);
+  };
+
+  const handleEditClick = () => {
+    setEditing(true);
+  }
+
+  const handleEditSurvey = async (editedSurvey) => {
+    const surveyRef = doc(db, 'surveys', editedSurvey.id);
+    await updateDoc(surveyRef, editedSurvey);
+    setEditing(false);
+    setSelectedSurvey(null);
+  };
+
+  const handleDeletingSurvey = async (id) => {
+    await deleteDoc(doc(db, 'surveys', id));
+    setSelectedSurvey(null);
+  } 
+
   let currVisibleState = null;
   let buttonText = null;
-  if (createFormVisible) {
-    currVisibleState = <NewSurveyForm />
+
+  if (error) {
+    currVisibleState = <p>There was an error: {error}</p>
+  } else if (editing) {
+    currVisibleState = <EditSurveyForm 
+      survey={selectedSurvey}
+      onEditSurvey={handleEditSurvey} />
     buttonText = 'Return to survey list';
+  } else if (createFormVisible) {
+    currVisibleState = <NewSurveyForm
+      onNewSurveyCreation={handleAddingNewSurveyToList} />
+    buttonText = 'Return to survey list';
+  } else if (selectedSurvey != null) {
+    currVisibleState = <SurveyDetail 
+      survey={selectedSurvey}
+      onClickingDelete={handleDeletingSurvey}
+      onClickingEdit={handleEditClick} />
+    buttonText="Return to survey list";
   } else {
-    currVisibleState = <SurveyList onSurveySelection={handleChangingSelectedSurvey} surveyList={mainSurveyList} />
+    currVisibleState = <SurveyList 
+      onSurveySelection={handleChangingSelectedSurvey} 
+      surveyList={mainSurveyList} />
     buttonText = 'Add survey';
   };
 
   return (
     <React.Fragment>
       {currVisibleState}
-      <button onClick={handleClick}>{buttonText}</button>
+      {error ? null : <button className="main-btn" onClick={handleClick}>{buttonText}</button>}
     </React.Fragment>
   );
 };
