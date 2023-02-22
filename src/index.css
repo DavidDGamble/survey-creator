@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   background-color: lavender;
 }
 
@@ -47,4 +47,37 @@ button {
 
 li {
   list-style: none;
+}
+
+.answers-list {
+  height: auto;
+  margin: 20px;
+  padding: 10px;
+  border: solid 3px olivedrab;
+  border-radius: 20px;
+}
+
+.header {
+  border: 3px solid olivedrab; 
+  display: flex;
+}
+
+.link {
+  width: 33%;
+  order: 1;
+  margin-right: 2rem;
+}
+
+.header-name {
+  width: 33%;
+  order: 2;
+}
+
+.curr-user {
+  width: 33%;
+  order: 3;
+}
+
+.survey-control {
+  text-align: center;
 }
