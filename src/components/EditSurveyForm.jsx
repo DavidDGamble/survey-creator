@@ -21,37 +21,38 @@ function EditSurveyForm(props) {
 
   return (
     <React.Fragment>
+      <h2>Edit Survey</h2>
       <form onSubmit={handleEditSurveyFormSubmit}>
         <input 
           type="text"
           name="name"
           defaultValue={props.survey.name}
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q1'
           defaultValue={props.survey.q1}
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q2'
           defaultValue={props.survey.q2}
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q3'
           defaultValue={props.survey.q3}
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q4'
           defaultValue={props.survey.q4}
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q5'
           defaultValue={props.survey.q5}
-        /><br/>
+        /><br/><br/>
         <button type="submit">Submit!</button>
       </form>
     </React.Fragment>

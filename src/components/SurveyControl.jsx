@@ -111,6 +111,7 @@ function SurveyControl() {
   const handleDeletingSurvey = async (id) => {
     await deleteDoc(doc(db, 'surveys', id));
     setSelectedSurvey(null);
+    setViewDetails(false);
   };
 
   const handleTakeSurveyClick = () => {
@@ -180,16 +181,18 @@ function SurveyControl() {
     } else {
       currVisibleState = <SurveyList
         onSurveySelection={handleChangingSelectedSurvey}
-        surveyList={currSurveyList} />
+        surveyList={currSurveyList}
+        onClickingYourSurveys={handleYourSurveysClick}
+        btnText={yourBtnText} />
       buttonText = 'Add survey';
     };
 
     return (
       <div className="survey-control">
-        {currUser}
+        <h3>Welcome {currUser}!</h3>
+        
         {currVisibleState}
         {error ? null : <button className="main-btn" onClick={handleClick}>{buttonText}</button>}
-        <button className="main-btn" onClick={handleYourSurveysClick}>{yourBtnText}</button>
       </div>
     );
   };

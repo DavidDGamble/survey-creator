@@ -2,9 +2,11 @@ import React from "react";
 import Survey from "./Survey";
 import PropTypes from 'prop-types';
 
+
 function SurveyList(props) {
   return (
     <div className="survey-list">
+      <h5>Click on a survey to see it's details!</h5>
       {props.surveyList.map((survey) =>
         <Survey
           whenSurveyClicked={props.onSurveySelection}
@@ -17,6 +19,7 @@ function SurveyList(props) {
           id={survey.id}
           key={survey.id} />
       )}
+      <button className="main-btn" onClick={props.onClickingYourSurveys}>{props.btnText}</button>
     </div>
   );
 };
@@ -24,6 +27,8 @@ function SurveyList(props) {
 SurveyList.propTypes = {
   surveyList: PropTypes.array,
   onSurveySelection: PropTypes.func,
+  btnText: PropTypes.string,
+  onClickingYourSurveys: PropTypes.func
 };
 
 export default SurveyList;

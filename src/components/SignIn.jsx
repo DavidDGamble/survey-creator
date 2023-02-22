@@ -14,6 +14,8 @@ function SignIn() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setSignUpSuccess(`You've successfully signed up, ${userCredential.user.email}`);
+        setSignInSuccess(null);
+        setSignOutSuccess(null);
       })
       .catch((error) => {
         setSignUpSuccess(`There was an error signing up: ${error.message}`);
@@ -26,7 +28,9 @@ function SignIn() {
     const password = event.target.signinPassword.value;
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        setSignInSuccess(`You've successfully signed in as ${userCredential.user.email}!`)
+        setSignInSuccess(`You've successfully signed in as ${userCredential.user.email}!`);
+        setSignUpSuccess(null);
+        setSignOutSuccess(null);
       })
       .catch((error) => {
         setSignInSuccess(`There was an error signing in: ${error.message}!`)
@@ -37,45 +41,60 @@ function SignIn() {
     signOut(auth)
       .then(function() {
         setSignOutSuccess("You have successfully signed out!");
+        setSignInSuccess(null);
+        setSignUpSuccess(null);
       }).catch(function(error) {
         setSignOutSuccess(`There was an error signing out: ${error.message}!`);
       });
   }
 
+
+
+  let currVisibleState = null;
+
+  if (auth.currentUser != null) {
+    currVisibleState = 
+    <div className="signOut">
+    <h2>Sign Out</h2>
+    {signOutSuccess}
+    <button onClick={doSignOut}>Sign out</button>
+    </div>
+  } else {
+    currVisibleState = 
+    <div className="signIn">
+    <h2>Sign Up</h2>
+    {signUpSuccess}
+    <form onSubmit={doSignUp}>
+      <input
+        type='text'
+        name='email'
+        placeholder='Email' /><br/><br/>
+      <input
+        type='password'
+        name='password'
+        placeholder='Password' /><br/><br/>
+      <button type='submit'>Sign up</button>
+    </form><br/><br/>
+
+    <h2>Sign In</h2>
+    {signInSuccess}
+    <form onSubmit={doSignIn}>
+      <input
+        type='text'
+        name='signinEmail'
+        placeholder='Email' /><br/><br/>
+      <input
+        type='password'
+        name='signinPassword'
+        placeholder='Password' /><br/><br/>
+      <button type='submit'>Sign in</button>
+    </form><br/><br/>
+    </div>
+  }
+
   return (
     <div className="sign-in">
-      <h1>Sign up</h1>
-      {signUpSuccess}
-      <form onSubmit={doSignUp}>
-        <input
-          type='text'
-          name='email'
-          placeholder='email' />
-        <input
-          type='password'
-          name='password'
-          placeholder='Password' />
-        <button type='submit'>Sign up</button>
-      </form>
-
-      <h1>Sign In</h1>
-      {signInSuccess}
-      <form onSubmit={doSignIn}>
-        <input
-          type='text'
-          name='signinEmail'
-          placeholder='email' />
-        <input
-          type='password'
-          name='signinPassword'
-          placeholder='Password' />
-        <button type='submit'>Sign in</button>
-      </form>
-
-      <h1>Sign Out</h1>
-      {signOutSuccess}
-      <br />
-      <button onClick={doSignOut}>Sign out</button>
+      {currVisibleState}
     </div>
   );
 };

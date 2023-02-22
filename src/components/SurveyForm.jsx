@@ -24,7 +24,7 @@ function SurveyForm(props) {
 
   return (
     <div className="survey-form" onSubmit={handleSurveyFormSubmit}>
-      <h2>{survey.name}</h2>
+      <h2>{survey.name}</h2><br/>
       <form>
         <label>{survey.q1}</label><br/>
         <input

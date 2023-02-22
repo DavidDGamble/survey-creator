@@ -17,41 +17,41 @@ function NewSurveyForm(props) {
   };
 
   return (
-    <React.Fragment>
+    <div className="newForm">
       <form onSubmit={handleNewSurveyFormSubmit}>
         <input 
           type="text"
           name="name"
           placeholder="Survey Name"
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q1'
           placeholder="Question 1"
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q2'
           placeholder="Question 2"
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q3'
           placeholder="Question 3"
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q4'
           placeholder="Question 4"
-        /><br/>
+        /><br/><br/>
         <textarea
           type='text'
           name='q5'
           placeholder="Question 5"
         /><br/>
-        <button type="submit">Submit!</button>
+        <button className="main-btn" type="submit">Submit!</button>
       </form>
-    </React.Fragment>
+      </div>
   )
 }
 
