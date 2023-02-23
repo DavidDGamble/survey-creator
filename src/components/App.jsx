@@ -5,6 +5,9 @@ import SurveyControl from './SurveyControl';
 import SignIn from './SignIn';
 import { auth } from './../firebase'
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import '../../src/App.css';
+
+
 
 function App() {
 

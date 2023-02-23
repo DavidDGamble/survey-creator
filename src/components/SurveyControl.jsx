@@ -6,7 +6,7 @@ import EditSurveyForm from './EditSurveyForm';
 import SurveyForm from './SurveyForm';
 import AnswersList from './AnswersList'
 import { db, auth } from './../firebase.js';
-import { collection, doc, addDoc, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, addDoc, onSnapshot, updateDoc, deleteDoc, query, getDocs, where } from 'firebase/firestore';
 
 function SurveyControl() {
   const [createFormVisible, setCreateFormVisible] = useState(false);
@@ -40,28 +40,6 @@ function SurveyControl() {
     return () => unSubscribe();
   }, []);
 
-  useEffect(() => {
-    if (viewAnswers) {
-      const unSubscribe = onSnapshot(collection(db, 'answers'),
-        (collectionSnapshot) => {
-          const answers = [];
-          collectionSnapshot.forEach((doc) => {
-            answers.push({
-              ...doc.data(),
-              id: doc.id
-            })
-          });
-          const filteredAnswers = answers.filter(answer => answer.surveyId === selectedSurvey.id)
-          setMainAnswersList(filteredAnswers)
-        },
-        (error) => {
-          setError(error.message);
-        }
-      );
-      return() => unSubscribe();
-    }
-  }, [viewAnswers]);
-
   const handleClick = () => {
     if (viewDetails || editing || takeSurvey || viewAnswers) {
       setCreateFormVisible(false);
@@ -91,7 +69,7 @@ function SurveyControl() {
   }
 
   const handleEditClick = () => {
-    setEditing(true);
+    setEditing(!editing);
   };
 
   const handleEditSurvey = async (editedSurvey) => {
@@ -115,7 +93,18 @@ function SurveyControl() {
     setYourSurveys(!yourSurveys);
   }
 
-  const handleAnswersClick = () => {
+  const handleAnswersClick = async () => {
+    const q = query(collection(db, 'answers'),
+      where('surveyId', '==', selectedSurvey.id))
+    const qSnapshot = await getDocs(q)
+    const answers = []
+    qSnapshot.forEach((doc) => {
+      answers.push({
+        ...doc.data(),
+        id: doc.id
+      })
+    });
+    setMainAnswersList(answers)
     setViewAnswers(!viewAnswers);
     setViewDetails(!viewDetails)
   }
@@ -146,7 +135,8 @@ function SurveyControl() {
     } else if (editing) {
       currVisibleState = <EditSurveyForm
         survey={selectedSurvey}
-        onEditSurvey={handleEditSurvey} />
+        onEditSurvey={handleEditSurvey}
+        onClickingEdit={handleEditClick} />
       buttonText = 'Return to survey list';
     } else if (takeSurvey) {
       currVisibleState = <SurveyForm

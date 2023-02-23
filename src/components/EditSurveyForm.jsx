@@ -20,7 +20,8 @@ function EditSurveyForm(props) {
   };
 
   return (
-    <React.Fragment>
+    <div className="edit-survey">
+      <button className="main-btn" onClick={props.onClickingEdit}>Return to details</button>
       <h2>Edit Survey</h2>
       <form onSubmit={handleEditSurveyFormSubmit}>
         <input 
@@ -52,16 +53,17 @@ function EditSurveyForm(props) {
           type='text'
           name='q5'
           defaultValue={props.survey.q5}
-        /><br/><br/>
-        <button type="submit">Submit!</button>
+        /><br/>
+        <button className="main-btn" type="submit">Submit!</button>
       </form>
-    </React.Fragment>
+    </div>
   );
 };
 
 EditSurveyForm.propTypes = {
   onEditSurvey: PropTypes.func,
-  survey: PropTypes.object
+  survey: PropTypes.object,
+  onClickingEdit: PropTypes.func
 };
 
 export default EditSurveyForm;

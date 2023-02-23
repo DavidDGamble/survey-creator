@@ -27,7 +27,7 @@ function SignIn(props) {
     <div className="signOut">
     <h2>Sign Out</h2>
     {props.signOutMessage}
-    <button onClick={props.onSignOut}>Sign out</button>
+    <button className="signout-btn" onClick={props.onSignOut}>Sign out</button>
     </div>
   } else {
     currVisibleState = 
@@ -42,8 +42,8 @@ function SignIn(props) {
       <input
         type='password'
         name='password'
-        placeholder='Password' /><br/><br/>
-      <button type='submit'>Sign up</button>
+        placeholder='Password' /><br/>
+      <button className="main-btn" type='submit'>Sign up</button>
     </form><br/><br/>
 
     <h2>Sign In</h2>
@@ -56,8 +56,8 @@ function SignIn(props) {
       <input
         type='password'
         name='signinPassword'
-        placeholder='Password' /><br/><br/>
-      <button type='submit'>Sign in</button>
+        placeholder='Password' /><br/>
+      <button className="main-btn" type='submit'>Sign in</button>
     </form><br/><br/>
     </div>
   }

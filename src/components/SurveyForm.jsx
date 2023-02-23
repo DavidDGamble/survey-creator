@@ -18,8 +18,8 @@ function SurveyForm(props) {
 
   return (
     <div className="survey-form" onSubmit={handleSurveyFormSubmit}>
-      <button onClick={props.onClickingSurvey} >Return to details</button>
-      <h2>{survey.name}</h2><br/>
+      <button className="main-btn" onClick={props.onClickingSurvey} >Return to details</button>
+      <h2>{survey.name}</h2>
       <form>
         <label>{survey.q1}</label><br/>
         <input
@@ -45,8 +45,8 @@ function SurveyForm(props) {
         <input
           type='text'
           name='a5' 
-        /><br/><br/>
-        <button type="submit">Submit!</button>
+        /><br/>
+        <button className="main-btn" type="submit">Submit!</button>
       </form>
     </div>
   );

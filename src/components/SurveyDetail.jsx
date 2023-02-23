@@ -14,6 +14,8 @@ function SurveyDetail(props) {
     new Audio(audio).play()
   }
 
+  
+
   const { survey, onClickingEdit, onClickingDelete, onClickingSurvey, onClickingAnswers } = props;
   let edit = null;
   let remove = null;
@@ -24,16 +26,17 @@ function SurveyDetail(props) {
   }
 
   return (
-    <div>
+    <div className="survey-details">
       <h2>Survey Details</h2>
+      <hr/>
       <h3>{survey.name}</h3>
       <p>{survey.q1}</p>
       <p>{survey.q2}</p>
       <p>{survey.q3}</p>
       <p>{survey.q4}</p>
       <p>{survey.q5}</p>
-      <button onClick={() => clickSurvey()} >Take Survey!</button>
-      <button onClick={onClickingAnswers}>View Answers!</button>
+      <button className="details-btn" onClick={() => clickSurvey()} >Take Survey!</button>
+      <button className="details-btn" onClick={onClickingAnswers}>View Answers!</button>
       {edit}
       {remove}
     </div>

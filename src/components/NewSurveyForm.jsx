@@ -66,36 +66,3 @@ NewSurveyForm.propTypes = {
 }
 
 export default NewSurveyForm
-
-
-// > let test = [];
-// undefined
-// > const q1 = 'what is the meaning of life?'
-// undefined
-// > test.push([test.length + 1, q1])
-// 1
-// > const q2 = 'will this work?'
-// undefined
-// > test.push([test.length + 1, q2])
-// 2
-// > const q3 = 'are you thirsty?'
-// undefined
-// > test.push([test.length + 1, q3])
-// 3
-// > const entries = new Map([
-// ...   ['foo', 'bar'],
-// ...   ['baz', 42]
-// ... ]);
-// undefined
-// > entries
-// Map(2) { 'foo' => 'bar', 'baz' => 42 }
-// > const questions = new Map(test)
-// undefined
-// > const obj = Object.fromEntries(questions)
-// undefined
-// > obj
-// {
-//   '1': 'what is the meaning of life?',
-//   '2': 'will this work?',
-//   '3': 'are you thirsty?'
-// }
