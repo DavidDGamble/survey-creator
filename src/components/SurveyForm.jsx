@@ -7,23 +7,18 @@ function SurveyForm(props) {
   function handleSurveyFormSubmit(event) {
     event.preventDefault();
     props.onNewAnswersCreation({
-      // name: survey.name,
       surveyId: survey.id,
-      // q1: survey.q1,
       a1: event.target.a1.value,
-      // q2: survey.q2,
       a2: event.target.a2.value,
-      // q3: survey.q3,
       a3: event.target.a3.value,
-      // q4: survey.q4,
       a4: event.target.a4.value,
-      // q5: survey.q5,
       a5: event.target.a5.value,
     });
   };
 
   return (
     <div className="survey-form" onSubmit={handleSurveyFormSubmit}>
+      <button onClick={props.onClickingSurvey} >Return to details</button>
       <h2>{survey.name}</h2><br/>
       <form>
         <label>{survey.q1}</label><br/>
@@ -59,7 +54,8 @@ function SurveyForm(props) {
 
 SurveyForm.propTypes = {
   survey: PropTypes.object,
-  onNewAnswersCreation: PropTypes.func
+  onNewAnswersCreation: PropTypes.func,
+  onClickingSurvey: PropTypes.func
 };
 
 export default SurveyForm;

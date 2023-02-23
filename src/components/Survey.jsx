@@ -5,11 +5,6 @@ function Survey(props) {
   return (
     <div className="survey" onClick = {() => props.whenSurveyClicked(props.id)}>
       <h3>{props.name}</h3>
-      <p>{props.q1}</p>
-      <p>{props.q2}</p>
-      <p>{props.q3}</p>
-      <p>{props.q4}</p>
-      <p>{props.q5}</p>
     </div>
   );
 };

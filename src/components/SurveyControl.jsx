@@ -20,13 +20,6 @@ function SurveyControl() {
   const [viewAnswers, setViewAnswers] = useState(false);
   const [mainAnswersList, setMainAnswersList] = useState([])
 
-  const [currUser, setCurrUser] = useState(null)
-  useEffect(() => {
-    if (auth.currentUser) {
-      setCurrUser(auth.currentUser.email)
-    }
-  }, [])
-
   useEffect(() => {
     const unSubscribe = onSnapshot(
       collection(db, 'surveys'),
@@ -70,7 +63,7 @@ function SurveyControl() {
   }, [viewAnswers]);
 
   const handleClick = () => {
-    if (selectedSurvey != null) {
+    if (viewDetails || editing || takeSurvey || viewAnswers) {
       setCreateFormVisible(false);
       setViewDetails(false)
       setEditing(false);
@@ -105,7 +98,7 @@ function SurveyControl() {
     const surveyRef = doc(db, 'surveys', editedSurvey.id);
     await updateDoc(surveyRef, editedSurvey);
     setEditing(false);
-    setSelectedSurvey(null);
+    setViewDetails(false);
   };
 
   const handleDeletingSurvey = async (id) => {
@@ -115,7 +108,7 @@ function SurveyControl() {
   };
 
   const handleTakeSurveyClick = () => {
-    setTakeSurvey(true);
+    setTakeSurvey(!takeSurvey);
   };
 
   const handleYourSurveysClick = () => {
@@ -123,8 +116,8 @@ function SurveyControl() {
   }
 
   const handleAnswersClick = () => {
-    setViewAnswers(true);
-    setViewDetails(false)
+    setViewAnswers(!viewAnswers);
+    setViewDetails(!viewDetails)
   }
 
   if (auth.currentUser == null) {
@@ -158,7 +151,8 @@ function SurveyControl() {
     } else if (takeSurvey) {
       currVisibleState = <SurveyForm
         survey={selectedSurvey}
-        onNewAnswersCreation={handleAddingAnswersToList} />
+        onNewAnswersCreation={handleAddingAnswersToList}
+        onClickingSurvey={handleTakeSurveyClick} />
       buttonText = 'Return to survey list';
     } else if (createFormVisible) {
       currVisibleState = <NewSurveyForm
@@ -176,6 +170,7 @@ function SurveyControl() {
       currVisibleState = <AnswersList
         survey={selectedSurvey}
         answersList={mainAnswersList}
+        onClickingAnswers={handleAnswersClick}
       />
       buttonText = "Return to survey list"
     } else {
@@ -189,10 +184,8 @@ function SurveyControl() {
 
     return (
       <div className="survey-control">
-        <h3>Welcome {currUser}!</h3>
-        
-        {currVisibleState}
         {error ? null : <button className="main-btn" onClick={handleClick}>{buttonText}</button>}
+        {currVisibleState}
       </div>
     );
   };

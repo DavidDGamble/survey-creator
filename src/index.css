@@ -83,12 +83,17 @@ li {
 
 .header {
   display: flex;
-  flex-direction: row;
   justify-content: center;
+  /* flex-direction: row;
+  justify-content: center; */
   border: 5px solid  #3EB489; 
   padding: 10px;
+  /* padding-bottom: 3%; */
+  padding-left: 8vw;
+  padding-right: 8vw;
   margin: 10px;
   border-radius: 20px;
+  height: 80px;
 }
 
 .link {
@@ -98,12 +103,14 @@ li {
 .links {
   width: 25%;
   margin-top: 2rem;
+  margin-right: 70%;
+  /* position: relative; */
 }
 
 .header-name {
-  width: 75%;
+  width: auto;
   text-align: center;
-  margin-right: 20%;
+  position: fixed;
 }
 
 .survey-control {
@@ -123,4 +130,9 @@ input {
   text-align: center;
 }
 
+.curr-user {
+  margin: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
 
