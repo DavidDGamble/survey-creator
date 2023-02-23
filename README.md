@@ -11,6 +11,7 @@
 * _JavaScript_
 * _React_
 * _Firebase_
+* _Bootstrap_
 
 ## Description
 
@@ -20,9 +21,9 @@ _This is a React web app that allows users to create an account and sign in enab
 
 * _clone the repository to your desktop from:_
 ```
-//Update with repository
+https://github.com/DavidDGamble/survey-creator.git
 ```
-* _Enter the following commands in your terminal in the root repository deaths-coffee_
+* _Enter the following commands in your terminal in the root repository survey-creator_
 ```
 npm i
 ```
