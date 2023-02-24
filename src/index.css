@@ -64,9 +64,9 @@ code {
   border-radius: .25rem;
 }
 
-button:hover {
-  background-color: white;
-}
+/* button:hover {
+  background-color: lavender;
+} */
 
 button {
   border: 2px solid black;
@@ -105,8 +105,9 @@ button {
   margin-top: 20px;
 }
 
-li {
-  list-style: none;
+textarea {
+  width: 50%;
+  height: 5rem;
 }
 
 .answers-list {

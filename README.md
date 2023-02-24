@@ -19,9 +19,18 @@ _This is a React web app that allows users to create an account and sign in enab
 
 ## Setup/Installation Requirements
 
-* _clone the repository to your desktop from:_
+* _Clone the repository to your desktop from:_
 ```
 https://github.com/DavidDGamble/survey-creator.git
+```
+* _Create a .env file in the survey-creator repository and fill in the following variables with the corresponding information from Firebase_
+```
+REACT_APP_FIREBASE_API_KEY=
+REACT_APP_FIREBASE_AUTH_DOMAIN=
+REACT_APP_FIREBASE_PROJECT_ID=
+REACT_APP_FIREBASE_STORAGE_BUCKET=
+REACT_APP_FIREBASE_SENDER_ID=
+REACT_APP_FIREBASE_APP_ID=
 ```
 * _Enter the following commands in your terminal in the root repository survey-creator_
 ```

@@ -4,16 +4,31 @@ import Header from './Header';
 import SurveyControl from './SurveyControl';
 import SignIn from './SignIn';
 import { auth } from './../firebase'
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import '../../src/App.css';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import './../App.css';
 
 
 
 function App() {
-
+  const [signUpSuccess, setSignUpSuccess] = useState(null); 
   const [signInSuccess, setSignInSuccess] = useState(null);
   const [signOutSuccess, setSignOutSuccess] = useState(null);
   const [currUser, setCurrUser] = useState(null)
+
+  function doSignUp(event) {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setSignUpSuccess(`You've successfully signed up, ${userCredential.user.email}!`);
+        setSignOutSuccess(null);
+        setCurrUser(auth.currentUser.email)
+      })
+      .catch((error) => {
+        setSignUpSuccess(`There was an error signing up: ${error.message}`);
+      });
+  };
 
   function doSignIn(event) {
     event.preventDefault();
@@ -34,6 +49,7 @@ function App() {
     signOut(auth)
       .then(function() {
         setSignOutSuccess("You have successfully signed out!");
+        setSignUpSuccess(null)
         setSignInSuccess(null);
         setCurrUser(null);
       }).catch(function(error) {
@@ -49,8 +65,10 @@ function App() {
       <Routes>
         <Route path="/sign-in" element={
             <SignIn 
+              onSignUp={doSignUp}
               onSignIn={doSignIn}
               onSignOut={doSignOut}
+              signUpMessage={signUpSuccess}
               signInMessage={signInSuccess}
               signOutMessage={signOutSuccess}
               />} />
